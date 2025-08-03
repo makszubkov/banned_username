@@ -1,56 +1,79 @@
-# banned_username
+# Username Availability Checker
 
-A Python module to check whether a given username is allowed based on a predefined list of banned words.
+This project automates the process of checking and assigning available usernames using the Pyrogram library with the Telegram API.
 
-This project helps to prevent the use of inappropriate, reserved, or system-related usernames in web applications or other services.
+## 📁 Project Structure
 
-## Features
+📦 Project Root
+┣ 📜 startwork.py
+┣ 📜 work.py
+┣ 📜 .env
+┣ 📜 requirements.txt
+┣ 📜 .gitignore
 
-- Fast validation of usernames against a list of banned or reserved words
-- Easily integrable with Django or other Python-based backends
-- Customizable word list
 
-## Installation
+---
 
-You can install the package using `pip`:
+## 🚀 Getting Started
+
+### 1. Install Requirements
+
+Install dependencies from `requirements.txt`:
 
 ```bash
-pip install git+https://github.com/makszubkov/banned_username.git
+pip install -r requirements.txt
 
-Or clone the repository:
+You must also have Git and Python 3.10+ installed.
+2. Environment Setup
 
-git clone https://github.com/makszubkov/banned_username.git
-cd banned_username
-pip install .
+Create a .env file in the root directory:
 
-Usage
+API_ID=your_api_id
+API_HASH=your_api_hash
+PHONE=+1234567890
+LOGIN=session_name
 
-from banned_username import is_banned
+🧠 Script Workflow
+✅ startwork.py
 
-# Returns True if the username is banned
-print(is_banned("admin"))  # True
-print(is_banned("john_doe"))  # False
+    Initializes a Pyrogram client session.
 
-Custom Word List
+    Sends a test message to your own Telegram account to verify setup.
 
-You can pass a custom list of banned words:
+    Automatically starts the client without stopping it after execution.
 
-from banned_username import is_banned, set_banned_list
+Usage:
 
-set_banned_list(["badword", "root", "support"])
+python startwork.py
 
-print(is_banned("root"))  # True
-print(is_banned("user123"))  # False
+⚙️ work.py
 
-Integration with Django
+    Loads a list of usernames from a .txt file (e.g. usernames.txt).
 
-This module can be used in Django validators or forms to enforce clean username policies.
+    Iterates over each username with a 15-second cooldown.
+
+    Tries to assign the username to the Telegram account.
+
+    Saves all successful usernames to success_log.txt.
+
+    Shows results at the end of execution.
+
+Usage:
+
+python work.py
+
+    ⚠️ Make sure the session is already authorized (run startwork.py at least once).
+
+📄 Input Format
+
+Your usernames.txt file must:
+
+    Contain one username per line.
+
+    Not include the @ symbol (e.g. username123, not @username123).
 
 Example:
 
-from django.core.exceptions import ValidationError
-from banned_username import is_banned
-
-def validate_username(value):
-    if is_banned(value):
-        raise ValidationError("This username is not allowed.")
+user1
+username_test
+sample_name
